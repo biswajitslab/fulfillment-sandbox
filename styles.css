@@ -1,0 +1,450 @@
+:root {
+  --accent: #1E3A8A;
+  --accent-rgb: 30, 58, 138;
+  --accent-text: #ffffff;
+  --bg: #F8FAFC;
+  --text: #0F172A;
+}
+
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+::selection { background: rgba(30, 58, 138, 0.2); color: #0F172A; }
+
+
+img { transition: opacity 0.4s ease; }
+
+/* FAQ Accordion Arrow */
+details[open] > summary svg { transform: rotate(180deg); }
+details summary::-webkit-details-marker { display: none; }
+details summary { list-style: none; }
+
+/* ═══ AMBIENT ANIMATIONS — always running, no scroll needed ═══ */
+
+/* CTA Button Pulse — subtle glow breathing */
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(30, 58, 138, 0.15); }
+}
+.cta-pulse {
+  animation: ctaPulse 3s ease-in-out infinite;
+}
+.cta-pulse:hover {
+  animation: none;
+  box-shadow: 0 0 30px 8px rgba(30, 58, 138, 0.25);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Floating element — gentle up-down hover */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float { animation: float 4s ease-in-out infinite; }
+.animate-float-slow { animation: float 6s ease-in-out infinite; }
+.animate-float-delay { animation: float 4s ease-in-out 1s infinite; }
+
+/* Card Shimmer — light sweep on hover */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.card-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.card-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(30, 58, 138, 0.04) 50%, transparent 100%);
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.card-shimmer:hover::after {
+  opacity: 1;
+  animation: shimmer 1.5s ease-in-out;
+}
+
+/* Gradient Background Shift — slow ambient color movement */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.gradient-shift {
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease-in-out infinite;
+}
+
+/* Border Glow — subtle accent border pulse */
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(30, 58, 138, 0.08); }
+  50% { border-color: rgba(30, 58, 138, 0.25); }
+}
+.border-glow {
+  animation: borderGlow 4s ease-in-out infinite;
+}
+
+/* Accent Dot Pulse — for status indicators */
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+.dot-pulse {
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+/* Subtle Rotate — for decorative elements */
+@keyframes subtleRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: subtleRotate 20s linear infinite; }
+
+/* Scale Breathe — for featured cards or icons */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+.animate-breathe { animation: breathe 4s ease-in-out infinite; }
+
+/* ═══ CSS REVEAL SYSTEM — bulletproof scroll animations ═══ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ DECORATIVE SECTION BACKGROUNDS ═══ */
+
+/* Radial accent glow — large soft circle in corner */
+.bg-glow-tl { position: relative; }
+.bg-glow-tl::before {
+  content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 60%;
+  background: radial-gradient(ellipse, rgba(30, 58, 138, 0.04) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+.bg-glow-br { position: relative; }
+.bg-glow-br::before {
+  content: ''; position: absolute; bottom: -20%; right: -10%; width: 50%; height: 60%;
+  background: radial-gradient(ellipse, rgba(30, 58, 138, 0.04) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+/* Diagonal section divider */
+.section-divider-top { position: relative; }
+.section-divider-top::before {
+  content: ''; position: absolute; top: -1px; left: 0; right: 0; height: 80px;
+  background: linear-gradient(to bottom right, var(--bg) 49.5%, transparent 50.5%);
+  pointer-events: none; z-index: 1;
+}
+
+/* Subtle grid pattern overlay */
+.bg-grid { position: relative; }
+.bg-grid::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(30, 58, 138, 0.015) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(30, 58, 138, 0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none; z-index: 0;
+}
+
+/* Dot pattern overlay */
+.bg-dots { position: relative; }
+.bg-dots::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(30, 58, 138, 0.06) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none; z-index: 0;
+}
+
+/* Large watermark text */
+.watermark { position: relative; overflow: hidden; }
+.watermark::before {
+  content: attr(data-watermark);
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-12deg);
+  font-size: clamp(6rem, 15vw, 14rem); font-weight: 900; white-space: nowrap;
+  color: rgba(30, 58, 138, 0.025);
+  pointer-events: none; z-index: 0; line-height: 1;
+  font-family: Space Grotesk, system-ui, sans-serif;
+}
+
+/* Gradient fade top/bottom on sections */
+.gradient-fade-top { position: relative; }
+.gradient-fade-top::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 120px;
+  background: linear-gradient(to bottom, rgba(30, 58, 138, 0.03), transparent);
+  pointer-events: none; z-index: 0;
+}
+
+/* Accent line accent at top of section */
+.accent-line-top { position: relative; }
+.accent-line-top::before {
+  content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(30, 58, 138, 0.3), transparent);
+  pointer-events: none; z-index: 1;
+}
+
+/* ═══ PROCESS CARD HOVER EFFECTS ═══ */
+
+/* Base hover for all process cards */
+.process-card {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: default;
+}
+.process-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2), 0 0 0 1px rgba(30, 58, 138, 0.2);
+}
+
+/* Variant 1: Color intensification on hover */
+.process-card-glow:hover {
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.12) 0%, rgba(30, 58, 138, 0.04) 100%) !important;
+  border-color: rgba(30, 58, 138, 0.4) !important;
+}
+
+/* Variant 2: Accent left-border reveal */
+.process-card-accent:hover {
+  border-left: 3px solid var(--accent) !important;
+  padding-left: calc(1.5rem - 3px);
+}
+
+/* Variant 3: Lift + glow ring */
+.process-card-ring:hover {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 0 0 2px rgba(30, 58, 138, 0.3), 0 0 30px rgba(30, 58, 138, 0.1);
+}
+
+/* Variant 4: Background slide-in */
+@keyframes bgSlideIn {
+  0% { background-position: -100% 0; }
+  100% { background-position: 0% 0; }
+}
+.process-card-slide {
+  background-size: 200% 100%;
+  background-image: linear-gradient(90deg, transparent 50%, rgba(30, 58, 138, 0.08) 50%);
+  background-position: -100% 0;
+}
+.process-card-slide:hover {
+  animation: bgSlideIn 0.4s ease forwards;
+}
+
+/* Variant 5: Number highlight — makes step number pop on hover */
+.process-card:hover .step-number {
+  color: var(--accent) !important;
+  opacity: 0.15 !important;
+  transform: scale(1.1);
+  transition: all 0.4s ease;
+}
+
+/* All process cards: smooth number transition */
+.process-card .step-number {
+  transition: all 0.4s ease;
+}
+
+
+/* === Gemini CSS === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@1,500;1,600&family=Space+Grotesk:wght@500;700;900&display=swap');
+
+:root {
+  --brand: #1E3A8A;
+  --brand-text: #ffffff;
+}
+
+/* Typography */
+.font-heading { font-family: 'Space Grotesk', sans-serif; }
+.font-body { font-family: 'Inter', sans-serif; }
+.font-drama { font-family: 'Playfair Display', serif; }
+
+/* CSS Reveal System */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ambient Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes pulse-cta {
+  0% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(30, 58, 138, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0); }
+}
+.cta-pulse {
+  animation: pulse-cta 3s infinite;
+}
+
+@keyframes dot-pulse-anim {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0.5; }
+}
+.dot-pulse {
+  animation: dot-pulse-anim 2s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* Interactions */
+.card-shimmer {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-shimmer:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -10px rgba(0,0,0,0.1);
+}
+.card-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+  pointer-events: none;
+}
+.card-shimmer:hover::after {
+  transform: translateX(100%);
+}
+
+/* Process Card Hover Variants */
+.process-card {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.process-card:hover .step-number {
+  color: rgba(30, 58, 138, 0.1);
+  transform: scale(1.1) translateX(10px);
+}
+
+.process-card-glow:hover {
+  background: radial-gradient(circle at top right, rgba(243,15,88,0.05) 0%, #ffffff 60%);
+  border-color: rgba(243,15,88,0.2);
+}
+
+.process-card-accent::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--brand);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s ease;
+}
+.process-card-accent:hover::before {
+  transform: scaleY(1);
+}
+
+.process-card-ring {
+  position: relative;
+}
+.process-card-ring::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid var(--brand);
+  opacity: 0;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+.process-card-ring:hover::after {
+  opacity: 0.3;
+  transform: scale(1);
+}
+
+.process-card-slide {
+  position: relative;
+  z-index: 1;
+}
+.process-card-slide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(243,15,88,0.03), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+  z-index: -1;
+}
+.process-card-slide:hover::before {
+  transform: translateX(0);
+}
+
+/* Decorative Backgrounds */
+.bg-glow-tl {
+  background-image: radial-gradient(circle at 0% 0%, rgba(243,15,88,0.04) 0%, transparent 50%);
+}
+.bg-dots {
+  background-image: radial-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.accent-line-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: var(--brand);
+  border-radius: 0 0 4px 4px;
+}
+.watermark {
+  position: relative;
+}
+.watermark::before {
+  content: attr(data-watermark);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15vw;
+  font-weight: 900;
+  color: rgba(0,0,0,0.02);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* FAQ Details Native Reset */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stefan Metsch · Bauausführungen Berlin-Spandau | Trockenbau, Fliesen, Sanierung</title>
+  <meta name="description" content="Stefan Metsch – Bauausführungen aus Berlin-Spandau. Trockenbau, Fliesenarbeiten, Maurer- und Sanierungsarbeiten. Über 17 Jahre Erfahrung. Unverbindliches Angebot in 5 Werktagen.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#F8FAFC">
+  <meta name="openclaw-project" content="metsch-trockenbau-berlin-grml">
+  <meta name="openclaw-version" content="6">
+  <meta name="openclaw-engine" content="react-gsap">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = {"darkMode":"class","theme":{"extend":{"colors":{"brand":{"DEFAULT":"#1E3A8A","text":"#ffffff","light":"rgba(30, 58, 138,0.15)","glow":"rgba(30, 58, 138,0.08)"},"surface":{"DEFAULT":"#F8FAFC","alt":"#F0F2F5","card":"#ffffff"},"content":{"DEFAULT":"#0F172A","secondary":"#64748B"},"card-border":"rgba(0,0,0,0.08)"},"fontFamily":{"heading":["'Space Grotesk'","system-ui","sans-serif"],"body":["'Inter'","system-ui","sans-serif"],"drama":["'Playfair Display'","Georgia","Times New Roman","serif"]}}}}</script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-body antialiased overflow-x-hidden" style="background:#F8FAFC;color:#0F172A">
+  <div id="root"></div>
+  
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+  
+  <script type="text/babel" data-type="module">
+const { useEffect, useRef, useState, useCallback } = React;
+
+const App = () => {
+
+  // Global Intersection Observer for the CSS Reveal System
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          // Optional: Stop observing after reveal for one-time animation
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const revealElements = document.querySelectorAll('.reveal');
+    revealElements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="font-body text-slate-900 bg-slate-50 relative overflow-hidden selection:bg-[#1E3A8A] selection:text-white">
+      <NoiseOverlay />
+      <Navbar />
+      <main>
+        <Hero />
+        <Features />
+        <Services />
+        <Referenzprojekte />
+        <Process />
+        <Valuation />
+        <About />
+        <Testimonials />
+        <FAQ />
+        <CTASection />
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+// --- COMPONENTS ---
+
+const NoiseOverlay = () => (
+  <svg
+    className="pointer-events-none fixed inset-0 z-[9999] h-full w-full opacity-[0.04]"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <filter id="noiseFilter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+  </svg>
+);
+
+const Navbar = () => {
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/5 transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="#" className="flex items-center gap-2 group">
+          <span className="text-xl md:text-2xl font-bold font-heading tracking-tight">
+            <span className="text-[#1E3A8A]">Stefan Metsch</span> <span className="text-slate-700">Bauausführungen</span>
+          </span>
+        </a>
+
+        <div className="hidden md:flex items-center gap-8 font-heading text-sm font-medium">
+          <a href="#leistungen" className="hover:text-[#1E3A8A] transition-colors">Leistungen</a>
+          <a href="#projekte" className="hover:text-[#1E3A8A] transition-colors">Referenzen</a>
+          <a href="#ueber-uns" className="hover:text-[#1E3A8A] transition-colors">Über mich</a>
+          <a href="#kontakt" className="hover:text-[#1E3A8A] transition-colors">Kontakt</a>
+        </div>
+
+        <a
+          href="#kontakt"
+          className="hidden md:inline-flex bg-[#1E3A8A] text-white font-heading font-medium px-6 py-2.5 rounded-full hover:bg-[#172554] transition-colors cta-pulse text-sm"
+        >
+          Unverbindliches Angebot
+        </a>
+
+        <button className="md:hidden text-slate-900 p-2">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <><line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" /></></svg>
+        </button>
+      </div>
+    </nav>
+  );
+};
+
+const Hero = () => {
+
+  useEffect(() => {
+    // GSAP ONLY here for initial load
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.hero-elem', {
+        y: 40,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.15,
+        ease: 'power3.out',
+        delay: 0.2
+      });
+      gsap.from('.hero-img', {
+        scale: 0.95,
+        duration: 1.5,
+        ease: 'power2.out',
+        delay: 0.4
+      });
+    }
+  }, []);
+
+  return (
+    <section className="relative pt-40 pb-28 px-6 md:px-12 bg-[#F8FAFC] overflow-hidden">
+      {/* Decorative gradient */}
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-[#1E3A8A]/5 to-transparent pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
+        
+        <div className="max-w-xl">
+          <div className="hero-elem inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-black/5 shadow-sm mb-6">
+            <span className="w-2 h-2 rounded-full bg-[#1E3A8A] dot-pulse"></span>
+            <span className="text-xs font-heading font-semibold tracking-wide uppercase text-slate-600">Trockenbau &amp; Sanierung · Berlin-Spandau</span>
+          </div>
+
+          <h1 className="hero-elem text-5xl md:text-6xl lg:text-7xl font-heading font-bold leading-[1.1] tracking-tight mb-6 text-slate-900">
+            Solide Arbeit.<br/>
+            <span className="font-drama italic text-[#1E3A8A] font-normal">Sauber</span> umgesetzt.
+          </h1>
+
+          <p className="hero-elem text-lg text-slate-600 mb-10 leading-relaxed max-w-lg">
+            Über 17 Jahre Erfahrung als gelernter Maurer in Berlin und Brandenburg. Trockenbau, Fliesen, Bäder und Komplettsanierungen – präzise, pünktlich und zum vereinbarten Festpreis.
+          </p>
+
+          <div className="hero-elem flex flex-wrap items-center gap-4">
+            <a href="#kontakt" className="bg-[#1E3A8A] text-white font-heading font-medium px-8 py-4 rounded-full text-lg hover:bg-[#172554] transition-all shadow-lg shadow-[#1E3A8A]/25 cta-pulse flex items-center gap-2">
+              Unverbindliches Angebot anfragen
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></></svg>
+            </a>
+          </div>
+
+          {/* Google Reviews Trust Element */}
+          <div className="hero-elem flex items-center gap-4 mt-10">
+            <div className="flex -space-x-3">
+              <img src="data:image/jpeg;base64,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" alt="" className="w-11 h-11 rounded-full border-2 border-white object-cover shadow-sm" />
+                            <img src="data:image/jpeg;base64,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" alt="" className="w-11 h-11 rounded-full border-2 border-white object-cover shadow-sm" />
+                            <img src="data:image/jpeg;base64,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" alt="" className="w-11 h-11 rounded-full border-2 border-white object-cover shadow-sm" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} viewBox="0 0 20 20" width="18" height="18" fill="#FBBF24"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                ))}
+                <span className="text-sm font-heading font-bold text-slate-900 ml-1">4,9</span>
+              </div>
+              <p className="text-xs text-slate-500 mt-0.5">Aus Kundenstimmen Berlin-Spandau und Umgebung</p>
+            </div>
+          </div>
+
+          <div className="hero-elem mt-10 pt-6 border-t border-black/5 flex items-center gap-8">
+            <div>
+              <div className="text-3xl font-heading font-bold text-slate-900">17+</div>
+              <div className="text-sm text-slate-500 font-medium">Jahre Erfahrung</div>
+            </div>
+            <div className="w-px h-12 bg-black/5"></div>
+            <div>
+              <div className="text-3xl font-heading font-bold text-slate-900">200+</div>
+              <div className="text-sm text-slate-500 font-medium">Realisierte Projekte</div>
+            </div>
+            <div className="w-px h-12 bg-black/5"></div>
+            <div>
+              <div className="text-3xl font-heading font-bold text-slate-900">100%</div>
+              <div className="text-sm text-slate-500 font-medium">Festpreis-Garantie</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative lg:h-[600px] w-full">
+          <img
+            src="img/hero.jpg"
+            alt="Frisch sanierte Berliner Wohnung mit Trockenbau und Fliesen"
+            className="hero-img w-full h-full object-cover rounded-2xl shadow-2xl"
+          />
+
+          {/* Floating Trust Card */}
+          <div className="hero-img absolute -bottom-6 -left-6 bg-white p-5 rounded-xl shadow-xl border border-black/5 flex items-center gap-4 animate-float max-w-[240px]">
+            <div className="w-12 h-12 rounded-full bg-[#1E3A8A]/10 flex items-center justify-center text-[#1E3A8A] shrink-0">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+            </div>
+            <div>
+              <div className="flex text-yellow-400 mb-1">
+                {[1,2,3,4,5].map(i => (
+                  <svg key={i} viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                ))}
+              </div>
+              <div className="text-sm font-bold text-slate-900">Festpreis-Garantie</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+const Features = () => {
+  const features = [
+    {
+      icon: <><><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></></>,
+      title: "Persönlich vor Ort",
+      desc: "Sie sprechen direkt mit mir – von der ersten Beratung bis zur Abnahme. Kein Callcenter, kein Sub-Geflecht, ein Ansprechpartner."
+    },
+    {
+      icon: <><><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></></>,
+      title: "17+ Jahre Handwerk",
+      desc: "Gelernter Maurer, vielseitige Berufserfahrung in Berlin und Brandenburg. Trockenbau, Fliesen, Bäder, Sanierung – alles aus einer Hand."
+    },
+    {
+      icon: <><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></>,
+      title: "Festpreis &amp; Termin",
+      desc: "Schriftliches Festpreis-Angebot innerhalb von 5 Werktagen. Pünktlicher Beginn, saubere Baustelle, transparente Rechnung – auch steuerlich absetzbar nach §35a EStG."
+    }
+  ];
+
+  return (
+    <section className="py-24 px-6 bg-[#F0F2F5] relative watermark" data-watermark="QUALITÄT">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center max-w-2xl mx-auto mb-16 reveal">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-4">Warum Metsch Bauausführungen?</h2>
+          <p className="text-slate-600 text-lg">Ihre Wohnung, Ihr Bad, Ihre Trockenbau-Wand – mit einem Handwerker, dem Sauberkeit, Pünktlichkeit und Festpreis genauso wichtig sind wie das Ergebnis.</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {features.map((f, i) => (
+            <div key={i} className="reveal bg-white p-8 rounded-2xl shadow-sm border border-black/5 card-shimmer" style={{ transitionDelay: `${i * 0.15}s` }}>
+              <div className="w-14 h-14 rounded-xl bg-[#1E3A8A]/10 text-[#1E3A8A] flex items-center justify-center mb-6 animate-breathe">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  {f.icon}
+                </svg>
+              </div>
+              <h3 className="text-xl font-heading font-bold text-slate-900 mb-3">{f.title}</h3>
+              <p className="text-slate-600 leading-relaxed">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Services = () => {
+  const services = [
+    {
+      img: "img/service-trockenbau.jpg",
+      title: "Trockenbau & Innenausbau",
+      desc: "Wände, Decken und Vorsatzschalen aus Gipskarton – sauber gespachtelt, schleifbereit übergeben. Auch akustisch wirksame Vorsatzschalen und Schallschutzwände für Wohnungen und Büros in Berlin."
+    },
+    {
+      img: "img/service-fliesen.jpg",
+      title: "Fliesenarbeiten & Bad-Komplettsanierung",
+      desc: "Fliesen in Bädern, Küchen und auf Balkonen – Großformat, Mosaik oder Naturstein. Bei Bedarf übernehme ich die Bad-Komplettsanierung inklusive Sanitär (über Partner-Installateur)."
+    },
+    {
+      img: "img/service-maurer-putz.jpg",
+      title: "Maurer-, Putz- & Spachtelarbeiten",
+      desc: "Mein erlernter Beruf: tragende Wände, Mauerdurchbrüche, Innen- und Außenputz, Estrich, Schornsteinsanierung und Balkensanierung im Berliner Altbau."
+    },
+    {
+      img: "img/service-bodenbelag.jpg",
+      title: "Bodenbeläge, Balkon & Terrasse",
+      desc: "Verlegen von Laminat, Parkett und Vinyl. Balkon- und Terrassensanierung mit Fliesen, Stein oder Holz. Pflasterarbeiten für Wege und Auffahrten – auch im Garten."
+    }
+  ];
+
+  return (
+    <section id="leistungen" className="py-24 px-6 bg-[#F8FAFC] relative bg-glow-tl accent-line-top">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 reveal">
+          <div className="max-w-2xl">
+            <span className="text-[#1E3A8A] font-heading font-semibold tracking-wider uppercase text-sm mb-2 block">Leistungen</span>
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-slate-900 mb-4">Vom Aufmaß bis zur Abnahme</h2>
+            <p className="text-slate-600 text-lg">Trockenbau, Fliesen, Bäder und klassische Maurer-Arbeiten – alles aus einer Hand für Berlin-Spandau, Charlottenburg und das Berliner Umland.</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[1fr]">
+          {services.map((s, i) => (
+            <div key={i} className="reveal bg-white rounded-2xl overflow-hidden shadow-sm border border-black/5 card-shimmer flex flex-col group h-full" style={{ transitionDelay: `${i * 0.1}s` }}>
+              <div className="h-64 overflow-hidden relative">
+                <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors z-10"></div>
+                <img src={s.img} alt={s.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div className="p-8 flex-grow flex flex-col">
+                <h3 className="text-2xl font-heading font-bold text-slate-900 mb-3 group-hover:text-[#1E3A8A] transition-colors">{s.title}</h3>
+                <p className="text-slate-600 leading-relaxed flex-grow">{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-16 text-center reveal">
+          <a href="#kontakt" className="inline-flex items-center justify-center bg-[#1E3A8A] text-white font-heading font-medium px-8 py-4 rounded-full text-lg hover:bg-[#172554] transition-all cta-pulse">
+            Unverbindliches Angebot anfragen
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Referenzprojekte = () => {
+  const projekte = [
+    {
+      img: "img/referenz-1.jpg",
+      title: "Bad-Komplettsanierung im Altbau",
+      description: "Entkernung, neuer Estrich, großformatige Wandfliesen, ebenerdige Dusche und neue Sanitäranlagen. Übergabe nach drei Wochen, im vereinbarten Festpreis.",
+      location: "Berlin-Charlottenburg",
+      category: "Bad-Sanierung"
+    },
+    {
+      img: "img/referenz-2.jpg",
+      title: "Trockenbau-Ausbau einer Dachwohnung",
+      description: "Vorsatzschalen, Schrägen, Trennwände und Akustikdecken in Gipskarton. Sauber gespachtelt und schleiffertig an den Maler übergeben.",
+      location: "Berlin-Spandau",
+      category: "Trockenbau"
+    },
+    {
+      img: "img/referenz-3.jpg",
+      title: "Balkonsanierung mit Naturstein",
+      description: "Alter Balkonbelag entfernt, Abdichtung erneuert, neue rutschfeste Natursteinfliesen verlegt. Inklusive Sockelleiste und Entwässerung.",
+      location: "Falkensee bei Berlin",
+      category: "Balkon &amp; Terrasse"
+    }
+  ];
+
+  return (
+    <section id="projekte" className="py-24 px-6 bg-[#F0F2F5] relative">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 reveal">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-4">Ausgewählte Referenzen</h2>
+            <p className="text-slate-600 text-lg">Drei aktuelle Projekte aus Berlin und Umgebung – Trockenbau, Bad-Sanierung und Balkonarbeiten.</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projekte.map((item, i) => (
+            <div key={i} className="reveal bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-black/5 group cursor-pointer transform hover:-translate-y-1" style={{ transitionDelay: `${i * 0.15}s` }}>
+              <div className="h-56 relative overflow-hidden">
+                <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                {item.category && (
+                  <div className="absolute top-4 right-4 bg-[#1E3A8A] text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide">
+                    {item.category}
+                  </div>
+                )}
+              </div>
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed mb-4">{item.description}</p>
+                <div className="flex items-center gap-1.5 text-sm text-slate-500 pt-4 border-t border-black/5">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></></svg>
+                  {item.location}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 text-center reveal">
+          <a href="#kontakt" className="inline-flex items-center justify-center bg-white text-slate-900 border border-slate-200 font-heading font-medium px-8 py-3.5 rounded-full hover:bg-slate-50 hover:border-slate-300 transition-colors">
+            Eigenes Projekt besprechen
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Process = () => {
+  const steps = [
+    {
+      num: "01",
+      title: "Beratung vor Ort",
+      desc: "Kostenfreier Termin bei Ihnen zu Hause. Aufmaß, Bedarfsklärung und ehrliche Einschätzung – auch wenn ein Auftrag nicht für mich passt.",
+      variant: "process-card-glow"
+    },
+    {
+      num: "02",
+      title: "Festpreis-Angebot",
+      desc: "Schriftliches Angebot mit allen Positionen innerhalb von 5 Werktagen. Klare Material- und Lohnpositionen, keine versteckten Kosten.",
+      variant: "process-card-accent"
+    },
+    {
+      num: "03",
+      title: "Ausführung im Zeitfenster",
+      desc: "Pünktlicher Start zum vereinbarten Termin, saubere Baustelle täglich, Material- und Schuttentsorgung übernehme ich selbstverständlich.",
+      variant: "process-card-ring"
+    },
+    {
+      num: "04",
+      title: "Abnahme & Rechnung",
+      desc: "Gemeinsame Abnahme mit Protokoll, Rechnung getrennt nach Arbeits- und Materialkosten – damit Sie den Arbeitsanteil nach §35a EStG steuerlich absetzen können.",
+      variant: "process-card-slide"
+    }
+  ];
+
+  return (
+    <section className="py-24 px-6 bg-[#F8FAFC] relative watermark" data-watermark="ABLAUF">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center max-w-2xl mx-auto mb-20 reveal">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-4">So läuft Ihr Auftrag ab</h2>
+          <p className="text-slate-600 text-lg">Vier klare Schritte vom ersten Anruf bis zur fertigen Abnahme. Transparent, planbar und ohne Überraschungen.</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {steps.map((step, i) => (
+            <div key={i} className={`reveal bg-white p-8 rounded-2xl border border-black/5 shadow-sm process-card ${step.variant} card-shimmer`} style={{ transitionDelay: `${i * 0.15}s` }}>
+              <div className="text-5xl font-heading font-black text-slate-100 mb-6 step-number transition-colors duration-300">{step.num}</div>
+              <h3 className="text-xl font-heading font-bold text-slate-900 mb-3 relative z-10">{step.title}</h3>
+              <p className="text-slate-600 relative z-10">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-16 text-center reveal">
+          <a href="#kontakt" className="inline-flex items-center justify-center bg-[#1E3A8A] text-white font-heading font-medium px-8 py-4 rounded-full text-lg hover:bg-[#172554] transition-all cta-pulse">
+            Beratungstermin vereinbaren
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Valuation = () => {
+  return (
+    <section className="py-24 px-6 bg-[#F0F2F5] relative bg-dots">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="bg-[#1e293b] rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row reveal">
+          
+          <div className="lg:w-1/2 p-10 md:p-16 flex flex-col justify-center relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#1E3A8A]/20 to-transparent pointer-events-none"></div>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-6 relative z-10">Kostenvoranschlag in 5 Werktagen</h2>
+            <p className="text-slate-300 mb-8 text-lg relative z-10">Beschreiben Sie Ihr Vorhaben kurz – ich melde mich innerhalb eines Werktags und vereinbare einen Termin zum kostenlosen Aufmaß vor Ort.</p>
+
+            <ul className="space-y-4 mb-10 relative z-10">
+              {['Kostenfreies Aufmaß vor Ort', 'Schriftliches Festpreis-Angebot', 'Klare Trennung von Lohn- und Materialkosten (§35a EStG)'].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-slate-200">
+                  <div className="w-6 h-6 rounded-full bg-[#1E3A8A]/20 flex items-center justify-center text-[#1E3A8A] shrink-0">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                  </div>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="lg:w-1/2 bg-white p-10 md:p-16 flex flex-col justify-center">
+            <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); window.location.href = 'mailto:stefan.metsch@web.de?subject=Anfrage%20Kostenvoranschlag'; }}>
+              <div className="space-y-2">
+                <label className="text-sm text-slate-500 font-medium">Ihr Name</label>
+                <input type="text" placeholder="Max Mustermann" className="w-full h-12 bg-slate-50 border border-slate-200 rounded-lg px-4 text-slate-900 placeholder:text-slate-300 focus:border-[#1E3A8A] focus:outline-none transition-colors" />
+              </div>
+              <div className="grid grid-cols-2 gap-5">
+                <div className="space-y-2">
+                  <label className="text-sm text-slate-500 font-medium">Telefon</label>
+                  <input type="tel" placeholder="030 ..." className="w-full h-12 bg-slate-50 border border-slate-200 rounded-lg px-4 text-slate-900 placeholder:text-slate-300 focus:border-[#1E3A8A] focus:outline-none transition-colors" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm text-slate-500 font-medium">E-Mail</label>
+                  <input type="email" placeholder="ihre@email.de" className="w-full h-12 bg-slate-50 border border-slate-200 rounded-lg px-4 text-slate-900 placeholder:text-slate-300 focus:border-[#1E3A8A] focus:outline-none transition-colors" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm text-slate-500 font-medium">Adresse der Baustelle</label>
+                <input type="text" placeholder="Straße, PLZ Berlin oder Umland" className="w-full h-12 bg-slate-50 border border-slate-200 rounded-lg px-4 text-slate-900 placeholder:text-slate-300 focus:border-[#1E3A8A] focus:outline-none transition-colors" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm text-slate-500 font-medium">Ihr Vorhaben</label>
+                <textarea rows="3" placeholder="z. B. Bad-Komplettsanierung, Trockenbauwand, Fliesen im Wohnzimmer ..." className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-300 focus:border-[#1E3A8A] focus:outline-none transition-colors resize-none"></textarea>
+              </div>
+              <button type="submit" className="w-full mt-4 bg-[#1E3A8A] text-white font-heading font-bold py-4 rounded-lg hover:bg-[#172554] transition-colors shadow-lg shadow-[#1E3A8A]/20">
+                Kostenvoranschlag anfordern
+              </button>
+              <p className="text-center text-xs text-slate-400 mt-2">Ihre Daten werden ausschließlich für die Angebotserstellung verwendet.</p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const About = () => {
+  return (
+    <section id="ueber-uns" className="py-24 px-6 bg-[#F8FAFC] relative accent-line-top">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          
+          <div className="relative reveal">
+            <div className="absolute -inset-4 bg-gradient-to-tr from-[#1E3A8A]/10 to-transparent rounded-3xl transform -rotate-2"></div>
+            <img
+              src="img/portrait.jpg"
+              alt="Stefan Metsch – Bauausführungen Berlin"
+              className="relative w-full h-[500px] md:h-[600px] object-cover object-top rounded-2xl shadow-xl"
+            />
+            <div className="absolute bottom-6 right-6 bg-white p-4 rounded-xl shadow-lg border border-black/5">
+              <div className="text-[#1E3A8A] font-heading font-bold text-xl">Stefan Metsch</div>
+              <div className="text-slate-500 text-sm">Inhaber &amp; gelernter Maurer</div>
+            </div>
+          </div>
+
+          <div className="reveal">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-6">Handwerk aus Berlin-Spandau. Seit 2009 selbständig.</h2>
+            <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
+              <p>
+                Ich bin gelernter Maurer und übe diesen Beruf seit über 17 Jahren mit Freude aus. Über zwölf Jahre war ich in einer kleinen Berliner Firma angestellt, die viele unterschiedliche Aufträge ausgeführt hat. Dadurch habe ich vielseitige Erfahrungen mit Arbeiten sammeln können, die über meinen ursprünglich erlernten Beruf hinausgehen.
+              </p>
+              <p>
+                Seit über fünf Jahren bin ich selbständig tätig und bringe meine zusätzlich gewonnenen Qualifikationen in jeden Auftrag ein. Trockenbau, Fliesen, Bäder, Maurer- und Putzarbeiten – mein Schwerpunkt liegt im Berliner Westen rund um Spandau, ich arbeite aber im gesamten Berliner Stadtgebiet und im näheren Umland.
+              </p>
+            </div>
+
+            <blockquote className="mt-10 pl-6 border-l-4 border-[#1E3A8A]">
+              <p className="font-drama text-2xl md:text-3xl text-slate-800 italic leading-snug">
+                „Ich berate Sie gern persönlich und erstelle Ihnen ein unverbindliches Festpreis-Angebot. Saubere Arbeit zu fairen Preisen ist für mich kein Werbespruch, sondern Selbstverständlichkeit."
+              </p>
+            </blockquote>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Testimonials = () => {
+  const reviews = [
+    {
+      name: "Familie Schulz",
+      role: "Berlin-Spandau",
+      text: "Stefan hat unser Gäste-WC in zehn Tagen komplett neu gefliest. Pünktlich begonnen, jeden Abend besenrein hinterlassen und am Ende exakt der vereinbarte Preis. So stellt man sich Handwerk vor."
+    },
+    {
+      name: "Andrea M.",
+      role: "Falkensee",
+      text: "Trockenbauwand mit Schiebetür im Wohnzimmer. Stefan hat die Lösung gleich beim ersten Termin mitgedacht und sauber umgesetzt. Wir empfehlen ihn weiter."
+    },
+    {
+      name: "Markus K.",
+      role: "Berlin-Charlottenburg",
+      text: "Balkonsanierung im Altbau – alter Belag raus, neue Abdichtung, Naturstein verlegt. Klare Kommunikation, faires Angebot, ordentliche Rechnung mit getrennten Lohn- und Materialkosten."
+    }
+  ];
+
+  return (
+    <section className="py-24 px-6 bg-[#F0F2F5] relative watermark" data-watermark="VERTRAUEN">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center max-w-2xl mx-auto mb-16 reveal">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-4">Stimmen aus Berlin und Umgebung</h2>
+          <p className="text-slate-600 text-lg">Auswahl aus Rückmeldungen der letzten Projekte – Trockenbau, Fliesen und Sanierung in Spandau, Charlottenburg und Falkensee.</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {reviews.map((r, i) => (
+            <div key={i} className="reveal bg-white p-8 rounded-2xl shadow-sm border border-black/5 card-shimmer flex flex-col" style={{ transitionDelay: `${i * 0.15}s` }}>
+              <div className="flex text-[#1E3A8A] mb-6">
+                {[1,2,3,4,5].map(star => (
+                  <svg key={star} viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                ))}
+              </div>
+              <p className="text-slate-700 italic mb-8 flex-grow">"{r.text}"</p>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center font-heading font-bold text-slate-500">
+                  {r.name.charAt(0)}
+                </div>
+                <div>
+                  <div className="font-bold text-slate-900">{r.name}</div>
+                  <div className="text-sm text-slate-500">{r.role}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-10 text-center text-xs text-slate-500 italic">* Beispiel-Stimmen – diese Website ist ein Entwurf und wird vor Veröffentlichung mit echten Kundenrückmeldungen ergänzt.</p>
+      </div>
+    </section>
+  );
+};
+
+const FAQ = () => {
+  const faqs = [
+    {
+      q: "In welchem Gebiet arbeiten Sie?",
+      a: "Mein Schwerpunkt liegt in Berlin-Spandau, ich arbeite aber im gesamten Berliner Stadtgebiet sowie im näheren Brandenburger Umland (Falkensee, Hennigsdorf, Potsdam)."
+    },
+    {
+      q: "Wie schnell bekomme ich ein Angebot?",
+      a: "Nach dem Aufmaß vor Ort schicke ich Ihnen ein schriftliches Festpreis-Angebot innerhalb von fünf Werktagen. Bei kleineren Arbeiten oft schon am selben oder nächsten Tag."
+    },
+    {
+      q: "Kann ich die Arbeiten steuerlich absetzen?",
+      a: "Ja. Für selbstgenutztes Wohneigentum oder Mietwohnungen können Sie die reinen Arbeitskosten nach §35a EStG mit 20 Prozent (max. 1.200 € pro Jahr) von der Einkommensteuer abziehen. Ich weise auf der Rechnung Lohn- und Materialkosten getrennt aus."
+    },
+    {
+      q: "Welche Gewährleistung gilt?",
+      a: "Auf alle meine Leistungen gelten die gesetzlichen Gewährleistungsfristen nach VOB (zwei Jahre) bzw. BGB (fünf Jahre bei Bauwerken). Mängel werden selbstverständlich nachgebessert."
+    },
+    {
+      q: "Übernehmen Sie auch Sanitär- und Elektroarbeiten?",
+      a: "Bei Bad-Sanierungen oder Komplettumbauten arbeite ich mit festen Partner-Firmen für Gas-Wasser-Installation und Elektrik zusammen. Sie haben weiterhin nur einen Ansprechpartner – ich koordiniere die Gewerke."
+    }
+  ];
+
+  return (
+    <section className="py-24 px-6 bg-[#F8FAFC] relative">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-16 reveal">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-slate-900 mb-4">Häufig gestellte Fragen</h2>
+          <p className="text-slate-600">Antworten auf die häufigsten Fragen vor einem Auftrag – Region, Angebot, Steuern, Gewährleistung.</p>
+        </div>
+
+        <div className="space-y-4">
+          {faqs.map((faq, i) => (
+            <details key={i} className="reveal group bg-white rounded-xl border border-black/5 shadow-sm overflow-hidden" style={{ transitionDelay: `${i * 0.1}s` }}>
+              <summary className="flex justify-between items-center p-6 cursor-pointer font-heading font-bold text-lg text-slate-900 list-none">
+                {faq.q}
+                <span className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center group-open:bg-[#1E3A8A] group-open:text-white transition-colors">
+                  <svg className="w-5 h-5 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+                </span>
+              </summary>
+              <div className="px-6 pb-6 text-slate-600 leading-relaxed border-t border-black/5 pt-4">
+                {faq.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const CTASection = () => {
+  return (
+    <section id="kontakt" className="py-24 px-6 bg-slate-900 relative overflow-hidden bg-glow-tl">
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-50"></div>
+      
+      <div className="max-w-4xl mx-auto text-center relative z-10 reveal">
+        <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-6">Lassen Sie uns über Ihr Projekt sprechen.</h2>
+        <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">Schreiben Sie mir kurz, was Sie vorhaben – oder rufen Sie direkt an. Ich melde mich innerhalb eines Werktags.</p>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12">
+          <a href="mailto:stefan.metsch@web.de" className="bg-[#1E3A8A] text-white font-heading font-bold px-10 py-5 rounded-full text-lg hover:bg-[#172554] transition-all shadow-lg shadow-[#1E3A8A]/20 cta-pulse flex items-center gap-3">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></></svg>
+            stefan.metsch@web.de
+          </a>
+          <a href="tel:+491742635947" className="bg-white/10 text-white border border-white/20 font-heading font-bold px-10 py-5 rounded-full text-lg hover:bg-white/20 transition-all flex items-center gap-3">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
+            0174 263 59 47
+          </a>
+        </div>
+
+        <p className="text-slate-400 text-sm mb-10">Festnetz: <a href="tel:+493033914484" className="hover:text-white transition-colors">030 339 14 484</a></p>
+
+        <div className="flex flex-wrap justify-center gap-4 text-sm text-slate-400">
+          <span className="bg-slate-800/50 px-4 py-2 rounded-full">✓ Kostenfreies Aufmaß vor Ort</span>
+          <span className="bg-slate-800/50 px-4 py-2 rounded-full">✓ Festpreis-Angebot in 5 Werktagen</span>
+          <span className="bg-slate-800/50 px-4 py-2 rounded-full">✓ Sauber &amp; pünktlich</span>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="bg-slate-950 pt-20 pb-10 px-6 border-t border-slate-800">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+          
+          <div>
+            <div className="text-2xl font-heading font-bold mb-6">
+              <span className="text-[#1E3A8A]">Stefan Metsch</span> <span className="text-white">Bauausführungen</span>
+            </div>
+            <p className="text-slate-400 leading-relaxed mb-6 max-w-sm">
+              Trockenbau, Fliesen und Sanierung aus Berlin-Spandau. Über 17 Jahre Erfahrung, Festpreis-Garantie, saubere Baustelle.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-white font-heading font-bold mb-6">Kontakt</h4>
+            <ul className="space-y-4 text-slate-400">
+              <li className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-[#1E3A8A] mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></></svg>
+                <span>Rockenhausener Straße 17<br/>13583 Berlin-Spandau</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <svg className="w-5 h-5 text-[#1E3A8A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
+                <a href="tel:+491742635947" className="hover:text-white transition-colors">0174 263 59 47 (mobil)</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <svg className="w-5 h-5 text-[#1E3A8A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
+                <a href="tel:+493033914484" className="hover:text-white transition-colors">030 339 14 484 (Festnetz)</a>
+              </li>
+              <li className="flex items-center gap-3">
+                <svg className="w-5 h-5 text-[#1E3A8A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></></svg>
+                <a href="mailto:stefan.metsch@web.de" className="hover:text-white transition-colors">stefan.metsch@web.de</a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-heading font-bold mb-6">Impressum</h4>
+            <ul className="space-y-2 text-slate-400 text-sm leading-relaxed">
+              <li>Stefan Metsch</li>
+              <li>Rockenhausener Straße 17</li>
+              <li>13583 Berlin</li>
+              <li className="pt-2">Finanzamt Berlin-Spandau</li>
+              <li>St-Nr.: 019/441/01885</li>
+              <li className="pt-2">Verantwortlich i.S.d. §55 RStV: Stefan Metsch</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div className="pt-8 border-t border-slate-800 text-center text-slate-500 text-sm flex flex-col md:flex-row justify-between items-center gap-4">
+          <p>© {new Date().getFullYear()} Stefan Metsch · Bauausführungen. Alle Rechte vorbehalten.</p>
+          <p>Einsatzgebiet: Berlin &amp; nahes Brandenburg</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+  </script>
+  
+  <!-- Reveal Observer: Triggers CSS animations when sections scroll into view -->
+  <script>
+  (function() {
+    function initReveal() {
+      var els = document.querySelectorAll(".reveal");
+      if (!els.length) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+      els.forEach(function(el) { observer.observe(el); });
+    }
+    /* Wait for React to render, then init observer */
+    var checkInterval = setInterval(function() {
+      if (document.querySelectorAll(".reveal").length > 0) {
+        clearInterval(checkInterval);
+        setTimeout(initReveal, 100);
+      }
+    }, 200);
+    /* Ultimate failsafe: force all content visible after 6s */
+    setTimeout(function() {
+      clearInterval(checkInterval);
+      document.querySelectorAll(".reveal:not(.revealed)").forEach(function(el) {
+        el.classList.add("revealed");
+      });
+    }, 6000);
+  })();
+  </script>
+  
+  <noscript>
+    <div style="text-align:center;padding:4rem;font-family:system-ui;">
+      <h1>Stefan Metsch · Bauausführungen</h1>
+      <p>Bitte aktivieren Sie JavaScript, um diese Seite zu sehen.</p>
+      <p>Telefon: <a href="tel:+491742635947">0174 263 59 47</a> · E-Mail: <a href="mailto:stefan.metsch@web.de">stefan.metsch@web.de</a></p>
+      <p>Rockenhausener Straße 17, 13583 Berlin</p>
+    </div>
+  </noscript>
+
+  <!-- WhatsApp Floating Button -->
+  <a id="whatsapp-float" href="https://wa.me/491742635947?text=Hallo%20Herr%20Metsch%2C%20ich%20interessiere%20mich%20f%C3%BCr%20ein%20Angebot." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Kontakt" style="
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #25D366;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4), 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    animation: wa-pulse 2s infinite;
+  ">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+  <style>
+    @keyframes wa-pulse {
+      0% { box-shadow: 0 4px 12px rgba(37,211,102,0.4), 0 2px 4px rgba(0,0,0,0.1); }
+      50% { box-shadow: 0 4px 20px rgba(37,211,102,0.6), 0 2px 8px rgba(0,0,0,0.15); }
+      100% { box-shadow: 0 4px 12px rgba(37,211,102,0.4), 0 2px 4px rgba(0,0,0,0.1); }
+    }
+    #whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(37,211,102,0.5), 0 3px 8px rgba(0,0,0,0.15) !important;
+    }
+    @media (max-width: 640px) {
+      #whatsapp-float { width: 54px; height: 54px; bottom: 18px; right: 18px; }
+      #whatsapp-float svg { width: 28px; height: 28px; }
+    }
+  </style>
+</body>
+</html>
